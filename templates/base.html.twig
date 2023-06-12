@@ -10,12 +10,12 @@
 
         {% block javascripts %}
         {% endblock %}
-    </head>
-    {{include('partials/header.html.twig')}}
-        
+    </head>     
+            
     <body>        
+        {% block header %}{% endblock %}
         {% block body %}{% endblock %}
     </body>
-     {{include('partials/footer.html.twig')}}
+     
        
 </html>
