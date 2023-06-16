@@ -14,7 +14,7 @@ class Ingredient
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id_ingredient = null;
+    private ?int $id = null;
     
     #[ORM\Column(length: 50)]
     #[Assert\NotBlank()]
@@ -38,7 +38,7 @@ class Ingredient
 
     public function getId(): ?int
     {
-        return $this->id_ingredient;
+        return $this->id;
     }
 
     public function getName(): ?string
@@ -75,5 +75,10 @@ class Ingredient
         $this->createdAt = $createdAt;
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return (string) $this->name;
     }
 }

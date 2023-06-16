@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}SymRecipe - Liste ingrédients{% endblock %}
+{% block title %}Liste des recettes{% endblock %}
 
 
 {% block body %}
@@ -24,10 +24,10 @@
   </div>
 </div>
 
-<div class="container mt-3">
-    <h1>Mes ingrédients</h1>
-    <a href="{{ path('ingredient.new') }}" class="btn btn-primary my-2">Nouveau</a> 
-    <p class="count">Il y a {{ ingredients.getTotalItemCount }} ingrédients au total</p>
+<div class="container mt-2">
+    <h1>Mes recettes</h1>
+    <a href="{{ path('recipe.new') }}" class="btn btn-primary my-2">Nouvelle recette</a> 
+    <p class="count">Il y a {{recipes.getTotalItemCount}} recettes au total</p>
     <hr>
     {% for message in app.flashes('success') %}
             <div class="alert alert-dismissible alert-success">
@@ -39,38 +39,39 @@
                 {{ message }}
             </div>
     {% endfor %}
-
-
-    {% if not ingredients.items is same as([]) %}
+    
+    {% if not recipes.items is same as([]) %}
     <table class="table table-hover">
         <thead>
             <tr>
                 <th scope="col">Id</th>
                 <th scope="col">Nom</th>
                 <th scope="col">Prix</th>
+                <th scope="col">Difficulté</th>
                 <th scope="col">Date</th>
                 <th scope="col">Modifier</th>
                 <th scope="col">Supprimer</th>
             </tr>
         </thead>
         <tbody>
-            {% for ingredient in ingredients %}
+            {% for recipe in recipes %}
                 <tr class="table-primary">
-                    <th scope="row">{{ ingredient.id }}</th>
-                    <td> {{ ingredient.name }} </td>
-                    <td> {{ ingredient.price }} </td>
-                    <td> {{ ingredient.createdat | date("d/m/Y")}} </td>
-                    <td> <a href="{{ path('ingredient.edit',{id: ingredient.id}) }}" class="btn btn-success">Modifier</a> </td>
-                    <td> <a onclick="showDelete({{ ingredient.id }})" role="button" class="btn btn-danger">Effacer</a> </td>                    
+                    <th scope="row">{{ recipe.id }}</th>
+                    <td> {{ recipe.name }} </td>
+                    <td> {{ recipe.price ? recipe.price:'non renseigné' }} </td>
+                    <td> {{ recipe.difficulty ? recipe.difficulty:'non renseigné' }} </td>
+                    <td> {{ recipe.createdat | date("d/m/Y")}} </td>
+                    <td> <a href="{{ path('recipe.edit',{id: recipe.id}) }}" class="btn btn-success">Modifier</a> </td>
+                    <td> <a onclick="showDelete({{ recipe.id }})" role="button" class="btn btn-danger">Effacer</a> </td>                    
                 </tr>
             {% endfor %}                
         </tbody>
     </table>    
     <div class="navigation d-flex justify-content-center">
-    {{ knp_pagination_render(ingredients) }}
+    {{ knp_pagination_render(recipes) }}
     </div>
     {% else %}
-        <h4> il n'y a pas d\'ingredients</h4>
+        <h4> il n'y a pas de recettes</h4>
     {% endif %}
 </div>
 {% endblock %}
@@ -94,11 +95,12 @@
 
     document.querySelector('#confirmButton').addEventListener('click', ()=>{
 
-        window.location.href='ingredient/delete/'+id;
         modal.hide();
+        window.location.href='recipe/delete/'+id;
+        
     });
 
-   
+       
 </script>
 {% endblock %}
 
