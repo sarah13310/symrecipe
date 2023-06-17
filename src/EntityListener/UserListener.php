@@ -23,7 +23,7 @@ class UserListener {
     }
 
     /** 
-     * ecodage du mot de passe
+     * encodage du mot de passe
      * @param User $user
      */
     public function encodePassword(User $user) {
