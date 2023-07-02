@@ -23,6 +23,8 @@ class UserListener {
     }
 
     /** 
+     * encode password
+     * 
      * encodage du mot de passe
      * @param User $user
      */
