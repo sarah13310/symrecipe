@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -53,13 +54,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column]
     #[Assert\NotNull()]
-    private ?\DateTimeImmutable $createdAt = null;
+    private ?DateTimeImmutable $createdAt = null;
 
     private ?string $plainPassword=null;
     private ?string $newPassword=null;
 
     #[ORM\OneToMany(mappedBy: 'User', targetEntity: Ingredient::class, orphanRemoval: true)]
     private Collection $ingredients;
+
+    #[ORM\OneToMany(mappedBy: 'Recipe', targetEntity: Recipe::class, orphanRemoval: true)]
+    private Collection $recipes;
      
     public function getId(): ?int
     {
@@ -155,12 +159,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
     
 
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function getCreatedAt(): ?DateTimeImmutable
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $createdAt): static
+    public function setCreatedAt(DateTimeImmutable $createdAt): static
     {
         $this->createdAt = $createdAt;
 
@@ -188,8 +192,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     public function __construct(){
-        $this->createdAt = new \DateTimeImmutable;
+        $this->createdAt = new DateTimeImmutable;
         $this->ingredients = new ArrayCollection();
+        $this->recipes = new ArrayCollection();
     }
 
     /**
@@ -239,6 +244,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             }
         }
 
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Recipe>
+     */
+    public function getRecipes(): Collection
+    {
+        return $this->recipes;
+    }
+
+    public function addRecipe(Recipe $recipe): static
+    {
+        if (!$this->recipes->contains($recipe)) {
+            $this->recipes->add($recipe);
+            $recipe->setRecipe($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRecipe(Recipe $recipe): static
+    {
+        if ($this->recipes->removeElement($recipe)) {
+            // set the owning side to null (unless already changed)
+            if ($recipe->getRecipe() === $this) {
+                $recipe->setRecipe(null);
+            }
+        }
         return $this;
     }
 }
