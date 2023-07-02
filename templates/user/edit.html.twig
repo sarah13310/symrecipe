@@ -5,8 +5,10 @@
 {% block body %}
 
 <div class="container mt-3">
-    <h1>Modification de l'utitilisateur</h1>
+    <h1>Modification des infomrations utitilisateur</h1>
     <hr>
-   {{form(form)}}
+    {% include('partials/alert.html.twig') %}
+
+    {{form(form)}}
 </div>
 {% endblock %}

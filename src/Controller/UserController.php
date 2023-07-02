@@ -35,7 +35,7 @@ class UserController extends AbstractController
             $user = $form->getData();
             $manager->persist($user);
             $manager->flush();
-            $this->addFlash('success', 'Utilisateur mise à jour!');
+            $this->addFlash('success', 'Informations mises à jour!');
         }
 
         return $this->render('user/edit.html.twig', [

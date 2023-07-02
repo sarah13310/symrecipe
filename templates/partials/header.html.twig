@@ -8,23 +8,33 @@
         <div class="collapse navbar-collapse" id="navbarColor01">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link active docs-creator" href="#">Accueil
+                    <a class="nav-link active docs-creator" href="{{ path('app.home') }}">Accueil
                         <span class="visually-hidden">(current)</span>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link docs-creator" href="{{ path('ingredient.index') }}">Ingrédients</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link docs-creator" href="{{ path('recipe.index') }}">Recettes</a>
-                </li>
+
                 {% if app.user %}
                     <li class="nav-item">
-                        <a class="nav-link docs-creator" href="{{ path('security.logout') }}">Déconnexion</a>
+                        <a class="nav-link docs-creator" href="{{ path('ingredient.index') }}">Ingrédients</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link docs-creator" href="{{ path('recipe.index') }}">Recettes</a>
+                    </li>
+                    <li class="nav-item dropdown ">
+                        <a class="nav-link dropdown-toggle docs-creator" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{ app.user.fullname }}</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item docs-creator" href="{{ path('user.edit', {id: app.user.id}) }}">Mes informations</a>
+                            <a class="dropdown-item docs-creator" href="{{ path('user.editPassword', {id: app.user.id}) }}">Mot de passe</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item docs-creator" href="{{ path('security.logout') }}">Déconnexion</a>
+                        </div>
                     </li>
                 {% else %}
                     <li class="nav-item">
                         <a class="nav-link docs-creator" href="{{ path('security.login') }}">Connexion</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link docs-creator" href="{{ path('security.register') }}">Inscription</a>
                     </li>
                 {% endif %}
 
