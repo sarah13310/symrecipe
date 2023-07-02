@@ -22,12 +22,24 @@ class AppFixtures extends Fixture
     }
     public function load(ObjectManager $manager): void
     {
+        $users=[];
+        for($u=1;$u <=10; $u++) {
+            $user= new  User();
+            $user->setFullName('FullNUser '.$u);
+            $user->setPseudo("User".$u);
+            $user->setEmail("user".$u."@example.com");
+            $user->setPlainPassword('password');
+            $user->setRoles(['ROLE_USER']);
+            $users[]=$user;
+            $manager->persist($user);
+        }
         
         $ingredients=[];
         for( $i = 1; $i < 50;$i++){
             $ingredient = new Ingredient();
-            $ingredient->setName('Ingredient'.$i);
-            $ingredient->setPrice(mt_rand(20,180));
+            $ingredient->setName('Ingredient'.$i)
+            ->setPrice(mt_rand(20,180))
+            ->setUser($users[mt_rand(0, count($users)-1)]);
             $manager->persist($ingredient);
             $ingredients[]=$ingredient;
         }     
@@ -41,21 +53,13 @@ class AppFixtures extends Fixture
             ->setDescription("Voici une recette facile à faire en famille.Sinon vous pouvez la savourer tout seul. ")
             ->setPrice(mt_rand(20,180))
             ->setIsFavorite(mt_rand(0,1));
+
             for ($j = 1; $j < mt_rand(5,20); $j++) {
                 $recipe->addIngredient($ingredients[mt_rand(0,count($ingredients) - 1)]);
             }
             $manager->persist($recipe);
-        }    
-        
-        for($u=1;$u <=10; $u++) {
-            $user= new  User();
-            $user->setFullName('FullNUser '.$u);
-            $user->setPseudo("User".$u);
-            $user->setEmail("user".$u."@example.com");
-            $user->setPlainPassword('password');
-            $user->setRoles(['ROLE_USER']);
-            $manager->persist($user);
         }
+
         $manager->flush();
     }
 }
